@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.carara.springessencials.domain.Anime;
+import xyz.carara.springessencials.requests.AnimePostRequestBody;
+import xyz.carara.springessencials.requests.AnimePutRequestBody;
 import xyz.carara.springessencials.service.AnimeService;
 import xyz.carara.springessencials.util.DateUtil;
 
@@ -21,19 +23,19 @@ public class AnimeController {
     private final AnimeService service;
 
     @GetMapping
-    public ResponseEntity<List<Anime>> list() {
+    public ResponseEntity<List<Anime>> listAll() {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(service.listAll());
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(service.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime newAnime) {
-        return new ResponseEntity<>(service.save(newAnime), HttpStatus.CREATED);
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody) {
+        return new ResponseEntity<>(service.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -43,8 +45,8 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime animeUpdated) {
-        service.replace(animeUpdated);
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody) {
+        service.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

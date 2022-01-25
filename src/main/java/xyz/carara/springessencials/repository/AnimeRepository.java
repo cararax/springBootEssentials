@@ -1,10 +1,9 @@
 package xyz.carara.springessencials.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import xyz.carara.springessencials.domain.Anime;
 
-//@Repository
-public class AnimeRepository {
-//    List<Anime> listAll(){
 
-//    }
+public interface AnimeRepository extends JpaRepository<Anime, Long> {
+
 }
