@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import xyz.carara.springessencials.domain.Anime;
+import xyz.carara.springessencials.mapper.AnimeMapper;
 import xyz.carara.springessencials.repository.AnimeRepository;
 import xyz.carara.springessencials.requests.AnimePostRequestBody;
 import xyz.carara.springessencials.requests.AnimePutRequestBody;
@@ -27,7 +28,7 @@ public class AnimeService {
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-        return repository.save(Anime.builder().name(animePostRequestBody.getName()).build());
+        return repository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
     public void delete(long id) {
@@ -36,11 +37,8 @@ public class AnimeService {
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
         Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
-        Anime animeUpdated = Anime.builder()
-                .id(savedAnime.getId())
-                .name(animePutRequestBody.getName())
-                .build();
-
+        Anime animeUpdated = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+        animeUpdated.setId(savedAnime.getId());
         repository.save(animeUpdated);
     }
 }
