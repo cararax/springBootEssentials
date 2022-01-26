@@ -1,10 +1,9 @@
 package xyz.carara.springessencials.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import xyz.carara.springessencials.domain.Anime;
+import xyz.carara.springessencials.exception.BadRequestException;
 import xyz.carara.springessencials.mapper.AnimeMapper;
 import xyz.carara.springessencials.repository.AnimeRepository;
 import xyz.carara.springessencials.requests.AnimePostRequestBody;
@@ -29,7 +28,7 @@ public class AnimeService {
 
     public Anime findByIdOrThrowBadRequestException(long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
+                .orElseThrow(() -> new BadRequestException("Anime not found"));
     }
 
     @Transactional //(rollbackOn = Exception.class)
