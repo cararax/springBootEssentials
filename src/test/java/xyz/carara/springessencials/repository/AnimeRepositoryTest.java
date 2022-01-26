@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import xyz.carara.springessencials.domain.Anime;
+import xyz.carara.springessencials.util.AnimeCreator;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -22,7 +23,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save persists anime when successful")
     void save_PersistAnime_WhenSuccessful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         Assertions.assertThat(animeSaved).isNotNull();
@@ -33,7 +34,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save updates anime when successful")
     void save_UpdatesAnime_WhenSuccessful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         animeSaved.setName("outro nome");
@@ -48,7 +49,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Delete updates anime when successful")
     void delete_RemovesAnime_WhenSuccessful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         this.animeRepository.delete(animeSaved);
 
@@ -60,7 +61,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Find by name returns list of animes when Successful")
     void findByName_ReturnsListOfAnime_WhenSuccessuful() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         String name = animeSaved.getName();
@@ -81,15 +82,8 @@ class AnimeRepositoryTest {
     @DisplayName("Save throw ConstrainValidationException when name is empty")
     void save_ThrowsConstrainValidationException_WhenNameIsEmpty() {
         Anime animeToBeSaved = new Anime();
-//        Assertions.assertThatThrownBy(()-> this.animeRepository.save(animeToBeSaved))
-//                        .isInstanceOf(ConstraintViolationException.class);
         Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(()-> this.animeRepository.save(animeToBeSaved))
                 .withMessageContaining("Anime name can not be empty");
-    }
-
-
-    private Anime createAnime() {
-        return Anime.builder().name("Anime de testes").build();
     }
 }

@@ -11,10 +11,8 @@ import xyz.carara.springessencials.domain.Anime;
 import xyz.carara.springessencials.requests.AnimePostRequestBody;
 import xyz.carara.springessencials.requests.AnimePutRequestBody;
 import xyz.carara.springessencials.service.AnimeService;
-import xyz.carara.springessencials.util.DateUtil;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,18 +20,16 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class AnimeController {
-    private final DateUtil dateUtil;
     private final AnimeService service;
 
     @GetMapping()
     public ResponseEntity<Page<Anime>> listAll(Pageable pageable) {
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+
         return ResponseEntity.ok(service.listAll(pageable));
     }
 
     @GetMapping(path="/all")
     public ResponseEntity<List<Anime>> listAll() {
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(service.listAllNonPageable());
     }
 
