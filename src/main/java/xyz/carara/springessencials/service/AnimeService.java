@@ -10,6 +10,7 @@ import xyz.carara.springessencials.repository.AnimeRepository;
 import xyz.carara.springessencials.requests.AnimePostRequestBody;
 import xyz.carara.springessencials.requests.AnimePutRequestBody;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -31,6 +32,7 @@ public class AnimeService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
 
+    @Transactional //(rollbackOn = Exception.class)
     public Anime save(AnimePostRequestBody animePostRequestBody) {
         return repository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
