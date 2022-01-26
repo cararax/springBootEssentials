@@ -11,15 +11,13 @@ import java.util.List;
 @Log4j2
 public class Client {
     public static void main(String[] args) {
-        //getForEntity retorna objeto dentro de um ResponseEntity
+        //GET
         ResponseEntity<Anime> entity = new RestTemplate().getForEntity("http://localhost:8080/animes/1", Anime.class);
         log.info(entity);
 
-        //getForObject retorna o próprio objeto
         Anime[] animes = new RestTemplate().getForObject("http://localhost:8080/animes/all", Anime[].class);
         log.info(animes);
         //@formatter:off
-
         //exchange retorna objeto dentro de um ResponseEntity
         ResponseEntity<List<Anime>> exchange = new RestTemplate().exchange("http://localhost:8080/animes/all",
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
@@ -27,6 +25,7 @@ public class Client {
         //@formatter:on
         log.info(exchange.getBody());
 
+        //POST
         Anime newAnime = Anime.builder().name("novo anime").build();
         Anime newAnimeSaved = new RestTemplate().postForObject("http://localhost:8080/animes/", newAnime, Anime.class);
         log.info("saved anime: {}", newAnimeSaved);
@@ -38,6 +37,25 @@ public class Client {
                 Anime.class);
         log.info("saved anime: {}", newAnimeSaved2);
 
+        //PUT
+        Anime animeToBeUpdated = newAnimeSaved2.getBody();
+        animeToBeUpdated.setName("anime atualizado com put");
+
+        ResponseEntity<Void> animeUpdated = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.PUT,
+                new HttpEntity<>(animeToBeUpdated, createJsonHeader()),
+                Void.class);
+
+        log.info(animeUpdated);
+
+        //DELETE
+        ResponseEntity<Void> animeDeleted = new RestTemplate().exchange("http://localhost:8080/animes/{id}",
+                HttpMethod.DELETE,
+                null,
+                Void.class,
+                animeToBeUpdated.getId());
+
+        log.info(animeDeleted);
     }
 
     private static HttpHeaders createJsonHeader() {
