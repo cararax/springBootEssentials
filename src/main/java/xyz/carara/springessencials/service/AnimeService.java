@@ -1,6 +1,8 @@
 package xyz.carara.springessencials.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.carara.springessencials.domain.Anime;
 import xyz.carara.springessencials.exception.BadRequestException;
@@ -18,8 +20,8 @@ public class AnimeService {
 
     private final AnimeRepository repository;
 
-    public List<Anime> listAll() {
-        return repository.findAll();
+    public Page<Anime> listAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public List<Anime> findByName(String name) {
