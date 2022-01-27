@@ -1,4 +1,4 @@
-package xyz.carara.springessencials.config;
+package xyz.carara.springessencials.configurer;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;

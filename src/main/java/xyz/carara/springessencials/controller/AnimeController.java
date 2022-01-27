@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import xyz.carara.springessencials.domain.Anime;
 import xyz.carara.springessencials.requests.AnimePostRequestBody;
@@ -38,6 +40,13 @@ public class AnimeController {
     public ResponseEntity<Anime> findById(@PathVariable long id) {
         return ResponseEntity.ok(service.findByIdOrThrowBadRequestException(id));
     }
+
+    @GetMapping(path = "/by-id/{id}")
+    public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
+        log.info("User details {}", userDetails);
+        return ResponseEntity.ok(service.findByIdOrThrowBadRequestException(id));
+    }
+
     @GetMapping(path = "/find")
     public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
         return ResponseEntity.ok(service.findByName(name));
