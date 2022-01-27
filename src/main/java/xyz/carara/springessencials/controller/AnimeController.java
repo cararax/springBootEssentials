@@ -23,7 +23,7 @@ public class AnimeController {
     private final AnimeService service;
 
     @GetMapping()
-    public ResponseEntity<Page<Anime>> listAll(Pageable pageable) {
+    public ResponseEntity<Page<Anime>> list(Pageable pageable) {
 
         return ResponseEntity.ok(service.listAll(pageable));
     }
