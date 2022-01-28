@@ -25,6 +25,7 @@ import xyz.carara.springessencials.util.AnimePutRequestBodyCreator;
 import java.util.Collections;
 import java.util.List;
 
+@DisplayName("Tests for Anime Controller")
 @ExtendWith(SpringExtension.class)
 class AnimeControllerTest {
 

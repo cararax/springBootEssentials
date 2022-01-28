@@ -61,7 +61,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Find by name returns list of animes when Successful")
     void findByName_ReturnsListOfAnime_WhenSuccessuful() {
-        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved ();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         String name = animeSaved.getName();

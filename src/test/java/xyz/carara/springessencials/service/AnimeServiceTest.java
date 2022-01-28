@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@DisplayName("Tests for Anime Service")
 @ExtendWith(SpringExtension.class)
 class AnimeServiceTest {
 
