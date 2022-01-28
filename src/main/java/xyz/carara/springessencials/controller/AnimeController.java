@@ -1,7 +1,11 @@
 package xyz.carara.springessencials.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,9 +28,13 @@ import java.util.List;
 public class AnimeController {
     private final AnimeService service;
 
-    @GetMapping()
-    public ResponseEntity<Page<Anime>> list(Pageable pageable) {
+    //check /v3/api-docs for json doc
 
+    @GetMapping()
+    @Operation(summary = "List all animes paginated",
+            description = "The default size is 20, use the parameter size to change the default value",
+            tags = {"anime"})
+    public ResponseEntity<Page<Anime>> list(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(service.listAll(pageable));
     }
 
@@ -65,6 +73,10 @@ public class AnimeController {
     }
 
     @DeleteMapping(path = "/admin/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful operation"),
+            @ApiResponse(responseCode = "400", description = "When anime dos not exist in the database"),
+    })
     public ResponseEntity<Void> delete(@PathVariable long id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
