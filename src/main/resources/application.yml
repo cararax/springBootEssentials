@@ -3,6 +3,8 @@ server:
     include-stacktrace: on_param
 
 spring:
+  application:
+    name: spring-essencials
   datasource:
     url: jdbc:mysql://localhost:3306/anime?createDatabaseIfNotExist=true
     username: root
@@ -16,15 +18,20 @@ logging:
   level:
     org:
       hibernate:
-          SQL: DEBUG
+        SQL: DEBUG
 management:
   endpoints:
     web:
       exposure:
-#        include: *
+        #        include: *
         include: info, health, metrics, prometheus
 
 
 info:
   app: Spring Boot 2 Essentials by Carara
   github: https://github.com/cararax
+
+  management:
+    metrics:
+      tags:
+        application=${spring.application.name}
